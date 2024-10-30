@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h3>Reponse au commentaire de {{ comment.user.username }}</h3>
+    <p>{{ comment.content }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="content" id="content" rows="4"></textarea>
+        <input type="submit" value="Repondre">
+    </form>
+
+{% endblock %}

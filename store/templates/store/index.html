@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for product in products %}
+
+    <h2>{{ product.name }}</h2>
+    <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" style="max-width: 250px;">
+    <!-- <a href="{% url 'product' slug=product.slug %}">Voir l'article</a> --> <!-- Premiere facon de faire -->
+    <!-- <a href="{% url 'product' product.slug %}">Voir l'article</a> -->  <!-- Ce n'est pas obligatoire de specifier le parametre slug a moins d'avoir plusieurs parametres a envoyer dans l'url -->
+    <a href="{{ product.get_absolute_url }}">Voir l'article</a> <!-- Deuxieme facon de faire -->
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <h2>{{ product.name }}</h2>
+    <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" style="max-width: 250px;" >
+
+
+    <h2>Commentaires</h2>
+    <h3>Ajouter un commentaire</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="content" id="content" rows="4"></textarea>
+        <input type="submit" value="Commenter">
+    </form>
+    {% for comment in comments %}
+    
+        <h3>Commentaire de <strong>{{ comment.user.username }}</strong> <small><a href="{% url 'comment-reponse' comment.id %}">Repondre</a></small></h3>
+        <small>Le {{ comment.created_at |date:"d F Y; H\hi" }}</small>
+        <p>{{ comment.content }}</p>
+
+        <!-- Affichage des reponses -->
+        {% if comment.reponses.all %}
+        <div style="margin-left:20px">
+            {% for reponse in comment.reponses.all %}
+                <p><strong>{{ reponse.user }}</strong></p>
+                <small>{{ reponse.created_at |date:"d F Y; H\hi" }}</small>
+                <p>{{ reponse.content }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% empty %}
+            <p>Aucun commentaire pour ce produit.</p>
+
+    {% endfor %}
+
+{% endblock %}

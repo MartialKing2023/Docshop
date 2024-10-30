@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <h2>{{ product.name }}</h2>
+    <h3>{{ product.price }}FCFA</h3>
+    <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" style="max-width: 250px;" >
+    <p>{{ product.description }}</p>
+    <p>{{ product.stock }} en stock</p>
+
+    {% if user.is_authenticated %}
+    <p>
+        <a href="{% url 'add-to-cart' product.slug %}">
+            Ajouter l'article dans le panier
+        </a>
+    </p>
+    {% endif %}
+
+    <h2>Commentaires</h2>
+    <h3>Ajouter un commentaire</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="content" id="content" rows="4"></textarea><br>
+        <input type="submit" value="Commenter">
+    </form>
+    <h3><a href="{% url 'comment-index' product.slug %}">Voir tous les commentaires</a></h3>
+    {% for comment in comments %}
+    
+        <h3>Commentaire de <strong>{{ comment.user.username }}</strong></h3>
+        <small>Le {{ comment.created_at |date:"d F Y; H\hi" }}</small>
+        <p>{{ comment.content }}</p>
+
+        {% empty %}
+            <p>Aucun commentaire pour ce produit.</p>
+
+    {% endfor %}
+
+{% endblock %}
